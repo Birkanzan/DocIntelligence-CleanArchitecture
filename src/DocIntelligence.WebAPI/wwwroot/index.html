@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DocIntelligence — Akıllı Belge İşleme Sistemi</title>
+  <meta name="description" content="DocIntelligence: OCR, ML sınıflandırma ve akıllı sıkıştırma ile belge işleme platformu." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+<!-- ─── SIDEBAR ──────────────────────────────────────────────── -->
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-logo">
+    <div class="logo-icon">
+      <svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect width="32" height="32" rx="10" fill="url(#lg1)"/>
+        <path d="M9 8h10l6 6v12a1 1 0 01-1 1H9a1 1 0 01-1-1V9a1 1 0 011-1z" fill="white" fill-opacity=".2"/>
+        <path d="M19 8l6 6h-5a1 1 0 01-1-1V8z" fill="white" fill-opacity=".4"/>
+        <rect x="11" y="16" width="10" height="1.5" rx=".75" fill="white"/>
+        <rect x="11" y="19.5" width="7" height="1.5" rx=".75" fill="white" fill-opacity=".6"/>
+        <circle cx="13" cy="12.5" r="2.5" fill="url(#lg2)"/>
+        <defs>
+          <linearGradient id="lg1" x1="0" y1="0" x2="32" y2="32" gradientUnits="userSpaceOnUse">
+            <stop stop-color="#6366f1"/>
+            <stop offset="1" stop-color="#8b5cf6"/>
+          </linearGradient>
+          <linearGradient id="lg2" x1="10.5" y1="10" x2="15.5" y2="15" gradientUnits="userSpaceOnUse">
+            <stop stop-color="#f0abfc"/>
+            <stop offset="1" stop-color="#a78bfa"/>
+          </linearGradient>
+        </defs>
+      </svg>
+    </div>
+    <span class="logo-text">DocIntelligence</span>
+  </div>
+
+  <nav class="sidebar-nav">
+    <button class="nav-item active" data-page="dashboard" id="nav-dashboard">
+      <svg viewBox="0 0 20 20" fill="currentColor"><path d="M3 4a1 1 0 011-1h4a1 1 0 011 1v4a1 1 0 01-1 1H4a1 1 0 01-1-1V4zM3 12a1 1 0 011-1h4a1 1 0 011 1v4a1 1 0 01-1 1H4a1 1 0 01-1-1v-4zM11 4a1 1 0 011-1h4a1 1 0 011 1v4a1 1 0 01-1 1h-4a1 1 0 01-1-1V4zM11 12a1 1 0 011-1h4a1 1 0 011 1v4a1 1 0 01-1 1h-4a1 1 0 01-1-1v-4z"/></svg>
+      <span>Dashboard</span>
+    </button>
+    <button class="nav-item" data-page="upload" id="nav-upload">
+      <svg viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM6.293 6.707a1 1 0 010-1.414l3-3a1 1 0 011.414 0l3 3a1 1 0 01-1.414 1.414L11 5.414V13a1 1 0 11-2 0V5.414L7.707 6.707a1 1 0 01-1.414 0z" clip-rule="evenodd"/></svg>
+      <span>Belge Yükle</span>
+    </button>
+    <button class="nav-item" data-page="documents" id="nav-documents">
+      <svg viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4zm2 6a1 1 0 011-1h6a1 1 0 110 2H7a1 1 0 01-1-1zm1 3a1 1 0 100 2h6a1 1 0 100-2H7z" clip-rule="evenodd"/></svg>
+      <span>Belgelerim</span>
+    </button>
+  </nav>
+
+  <div class="sidebar-footer">
+    <div class="api-status" id="api-status">
+      <div class="status-dot" id="status-dot"></div>
+      <span id="status-text">API bağlanıyor…</span>
+    </div>
+  </div>
+</aside>
+
+<!-- ─── MAIN CONTENT ─────────────────────────────────────────── -->
+<main class="main" id="main">
+
+  <!-- TOP BAR -->
+  <header class="topbar">
+    <div class="topbar-left">
+      <h1 class="page-title" id="page-title">Dashboard</h1>
+    </div>
+    <div class="topbar-right">
+      <div class="search-box">
+        <svg viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd"/></svg>
+        <input type="text" id="global-search" placeholder="Belge ara…" autocomplete="off" />
+      </div>
+    </div>
+  </header>
+
+  <!-- ══ PAGE: DASHBOARD ══════════════════════════════════════ -->
+  <section class="page active" id="page-dashboard">
+
+    <div class="stats-grid">
+      <div class="stat-card" id="stat-total">
+        <div class="stat-icon purple"><svg viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4z" clip-rule="evenodd"/></svg></div>
+        <div class="stat-body">
+          <div class="stat-value" id="total-docs">—</div>
+          <div class="stat-label">Toplam Belge</div>
+        </div>
+      </div>
+      <div class="stat-card" id="stat-completed">
+        <div class="stat-icon green"><svg viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg></div>
+        <div class="stat-body">
+          <div class="stat-value" id="completed-docs">—</div>
+          <div class="stat-label">İşlendi</div>
+        </div>
+      </div>
+      <div class="stat-card" id="stat-processing">
+        <div class="stat-icon blue"><svg viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clip-rule="evenodd"/></svg></div>
+        <div class="stat-body">
+          <div class="stat-value" id="processing-docs">—</div>
+          <div class="stat-label">İşleniyor</div>
+        </div>
+      </div>
+      <div class="stat-card" id="stat-saved">
+        <div class="stat-icon orange"><svg viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm3.293-7.707a1 1 0 011.414 0L9 10.586V3a1 1 0 112 0v7.586l1.293-1.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z" clip-rule="evenodd"/></svg></div>
+        <div class="stat-body">
+          <div class="stat-value" id="saved-bytes">—</div>
+          <div class="stat-label">Tasarruf Edilen</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="dashboard-grid">
+      <!-- Son Belgeler -->
+      <div class="card recent-docs-card">
+        <div class="card-header">
+          <h2>Son Yüklenen Belgeler</h2>
+          <button class="btn-text" onclick="showPage('documents')">Tümünü Gör →</button>
+        </div>
+        <div class="table-wrapper">
+          <table class="data-table" id="recent-table">
+            <thead>
+              <tr>
+                <th>Dosya Adı</th>
+                <th>Durum</th>
+                <th>Kategori</th>
+                <th>Boyut</th>
+                <th>Tarih</th>
+              </tr>
+            </thead>
+            <tbody id="recent-tbody">
+              <tr><td colspan="5" class="empty-cell"><div class="spinner-sm"></div></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Sıkıştırma Özeti -->
+      <div class="card compression-card">
+        <div class="card-header">
+          <h2>Sıkıştırma Analizi</h2>
+        </div>
+        <div class="compression-visual">
+          <div class="donut-container">
+            <svg class="donut-chart" viewBox="0 0 120 120" id="donut-svg">
+              <circle class="donut-bg" cx="60" cy="60" r="46" />
+              <circle class="donut-fill" cx="60" cy="60" r="46" id="donut-fill"
+                stroke-dasharray="0 289" stroke-dashoffset="72" />
+            </svg>
+            <div class="donut-label">
+              <div class="donut-value" id="avg-saving">—</div>
+              <div class="donut-sub">Ort. Tasarruf</div>
+            </div>
+          </div>
+          <div class="compression-legend">
+            <div class="legend-item">
+              <div class="legend-dot purple"></div>
+              <div>
+                <div class="legend-label">Orijinal</div>
+                <div class="legend-val" id="orig-total">—</div>
+              </div>
+            </div>
+            <div class="legend-item">
+              <div class="legend-dot green"></div>
+              <div>
+                <div class="legend-label">Optimize</div>
+                <div class="legend-val" id="opt-total">—</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ PAGE: UPLOAD ════════════════════════════════════════ -->
+  <section class="page" id="page-upload">
+    <div class="upload-container">
+      <div class="drop-zone" id="drop-zone">
+        <div class="drop-icon">
+          <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M32 44V20M32 20L22 30M32 20L42 30" stroke="url(#upGrad)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M16 48h32" stroke="url(#upGrad)" stroke-width="3" stroke-linecap="round"/>
+            <defs>
+              <linearGradient id="upGrad" x1="16" y1="20" x2="48" y2="48" gradientUnits="userSpaceOnUse">
+                <stop stop-color="#a78bfa"/>
+                <stop offset="1" stop-color="#38bdf8"/>
+              </linearGradient>
+            </defs>
+          </svg>
+        </div>
+        <p class="drop-title">Dosyayı buraya sürükleyin</p>
+        <p class="drop-sub">veya bilgisayarınızdan seçin</p>
+        <label class="btn-primary" for="file-input">Dosya Seç</label>
+        <input type="file" id="file-input" accept=".pdf,.jpg,.jpeg,.png,.tiff,.bmp" hidden multiple />
+        <p class="drop-hint">PDF, JPEG, PNG, TIFF, BMP — maks. 50 MB</p>
+      </div>
+
+      <div class="upload-queue" id="upload-queue" style="display:none">
+        <h3>Yükleme Kuyruğu</h3>
+        <div id="queue-items"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ PAGE: DOCUMENTS ═════════════════════════════════════ -->
+  <section class="page" id="page-documents">
+    <div class="toolbar">
+      <div class="filter-group">
+        <select id="filter-status" class="filter-select">
+          <option value="">Tüm Durumlar</option>
+          <option value="Pending">Bekliyor</option>
+          <option value="Optimizing">Optimize Ediliyor</option>
+          <option value="ExtractingText">OCR</option>
+          <option value="Classifying">Sınıflandırılıyor</option>
+          <option value="Completed">Tamamlandı</option>
+          <option value="Failed">Hata</option>
+        </select>
+        <select id="filter-category" class="filter-select">
+          <option value="">Tüm Kategoriler</option>
+          <option value="Invoice">Fatura</option>
+          <option value="Contract">Sözleşme</option>
+          <option value="Report">Rapor</option>
+          <option value="Form">Form</option>
+          <option value="Other">Diğer</option>
+        </select>
+        <button class="btn-secondary" id="btn-refresh" onclick="loadDocuments()">
+          <svg viewBox="0 0 20 20" fill="currentColor" width="16" height="16"><path fill-rule="evenodd" d="M4 2a1 1 0 011 1v2.101a7.002 7.002 0 0111.601 2.566 1 1 0 11-1.885.666A5.002 5.002 0 005.999 7H9a1 1 0 010 2H4a1 1 0 01-1-1V3a1 1 0 011-1zm.008 9.057a1 1 0 011.276.61A5.002 5.002 0 0014.001 13H11a1 1 0 110-2h5a1 1 0 011 1v5a1 1 0 11-2 0v-2.101a7.002 7.002 0 01-11.601-2.566 1 1 0 01.61-1.276z" clip-rule="evenodd"/></svg>
+          Yenile
+        </button>
+      </div>
+    </div>
+
+    <div class="table-wrapper card">
+      <table class="data-table" id="docs-table">
+        <thead>
+          <tr>
+            <th>Dosya Adı</th>
+            <th>Durum</th>
+            <th>Kategori</th>
+            <th>Orijinal</th>
+            <th>Optimize</th>
+            <th>Tasarruf</th>
+            <th>Güven</th>
+            <th>Tarih</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody id="docs-tbody">
+          <tr><td colspan="9" class="empty-cell"><div class="spinner-sm"></div></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="pagination" id="pagination"></div>
+  </section>
+
+</main>
+
+<!-- ─── DETAIL MODAL ─────────────────────────────────────────── -->
+<div class="modal-backdrop" id="modal-backdrop" style="display:none" onclick="closeModal()">
+  <div class="modal" onclick="event.stopPropagation()">
+    <button class="modal-close" onclick="closeModal()">✕</button>
+    <div id="modal-content"></div>
+  </div>
+</div>
+
+<!-- ─── TOAST ────────────────────────────────────────────────── -->
+<div class="toast-container" id="toast-container"></div>
+
+<script src="app.js"></script>
+</body>
+</html>
